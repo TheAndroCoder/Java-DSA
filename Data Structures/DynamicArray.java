@@ -21,6 +21,9 @@ class Array <T> implements Iterable<T>{
     private int len=0; // length user thinks array is
     private int capacity=0; // actual capacity of dynamic array
 
+    /**
+     * If user does not provide a capacity then default capacity=16
+     */
     public Array(){
         this(16);
     }
@@ -31,20 +34,45 @@ class Array <T> implements Iterable<T>{
         arr = (T[]) new Object[capacity];
     }
 
+    /**
+     * Returns size of the dynamic array
+     * @return size of the dynamic array or the number of elements present
+     */
     public int size(){
         return this.len;
     }
+
+    /**
+     * Returns true if array is empty - else returns false
+     * @return true/false
+     */
     public boolean isEmpty(){
         return this.len==0;
     }
 
+    /**
+     * Get element at specified index
+     * @param index
+     * @return element at specified index
+     */
     public T get(int index){
+        if(arr[index]==null)throw new NullPointerException();
         return arr[index];
     }
+
+    /**
+     * replaces the element at specified index by the given element
+     * @param index the index at which element needs to be replaced
+     * @param element the new element
+     */
     public void set(int index,T element){
+        if(index>=this.len)throw new IndexOutOfBoundsException();
         arr[index]=element;
     }
 
+    /**
+     * removes all the elements from the array
+     */
     public void clear(){
         for (int i = 0; i <len ; i++) {
             arr[i]=null;
@@ -52,6 +80,10 @@ class Array <T> implements Iterable<T>{
         len=0;
     }
 
+    /**
+     * Append an element to the array
+     * @param element the element to be appended
+     */
     public void add(T element){
         // check if resizing needed
         if(len+1>=capacity){
@@ -65,6 +97,10 @@ class Array <T> implements Iterable<T>{
         arr[len++]=element;
     }
 
+    /**
+     * remove element at index
+     * @param index the index to be removed
+     */
     public void remove(int index){
         if(index>=this.len || index<0)throw new IndexOutOfBoundsException();
         for (int i = index+1; i <len ; i++) {
@@ -73,6 +109,11 @@ class Array <T> implements Iterable<T>{
         len--;
     }
 
+    /**
+     * Remove element if exists
+     * @param element the element to be removed
+     * @return true if element is found and removed else returns false if element not found
+     */
     public boolean remove(T element){
         for (int i = 0; i <len ; i++) {
             if(arr[i].equals(element)){
@@ -83,6 +124,11 @@ class Array <T> implements Iterable<T>{
         return false;
     }
 
+    /**
+     * returns index of an element if exists
+     * @param element element whose index needs to be found
+     * @return index of element if found else returns -1
+     */
     public int indexOf(T element){
         for (int i = 0; i <len ; i++) {
             if(arr[i].equals(element)){
@@ -92,6 +138,11 @@ class Array <T> implements Iterable<T>{
         return -1;
     }
 
+    /**
+     * returns if element exists or not
+     * @param element the element to be searched for
+     * @return true if element exists else returns false
+     */
     public boolean contains(T element){
         for (int i = 0; i <len ; i++) {
             if(arr[i].equals(element)){
@@ -101,8 +152,10 @@ class Array <T> implements Iterable<T>{
         return false;
     }
 
-
-
+    /**
+     * Iterator for fast iteration of array elements
+     * @return iterator object for the dynamic array
+     */
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
@@ -119,6 +172,10 @@ class Array <T> implements Iterable<T>{
         };
     }
 
+    /**
+     * Represents array as a string of elements seperated by space
+     * @return string representation of the array
+     */
     @Override
     public String toString() {
         String str="";
