@@ -2,6 +2,9 @@ package LinearDS;
 
 import java.util.Iterator;
 
+/**
+* @author theandrocoder
+*/
 public class DoublyLinkedList {
     public static void main(String[] args) {
         DLinkedList<Integer> dll = new DLinkedList<>();
