@@ -35,8 +35,31 @@ public class SinglyLinkedListExcercises {
         // Find Intersection point of two linked list
         // findIntersection() defined in LinkedList class
 
+        //merge two sorted linkedlist such that merged list is in reverse order
+        LinkedList<Integer> llist1 = new LinkedList<>();
+        LinkedList<Integer> llist2 = new LinkedList<>();
+        llist1.add(5);
+        llist1.add(10);
+        llist1.add(15);
+        llist1.add(40);
+        llist2.add(2);
+        llist2.add(3);
+        llist2.add(20);
+        LinkedList<Integer> merged = llist1.mergeAndReverse(llist2);
+        Iterator<Integer> merged_it = merged.iterator();
+        while(merged_it.hasNext()){
+            System.out.print(merged_it.next()+" ");
+        }
+
+        // Delete alternate nodes in linked list
+        //llist.deleteAlternate();
+
+        // Delete middle node of linked list
+        llist.deleteMiddle();
+
 
         //Iterate through all elements in llist
+        System.out.println("\nIterating through all elements of llist");
         Iterator<Integer> it = llist.iterator();
         while(it.hasNext()){
             System.out.print(it.next()+" ");
@@ -44,7 +67,7 @@ public class SinglyLinkedListExcercises {
     }
 }
 
-class LinkedList<T> implements Iterable<T>{
+class LinkedList<T extends Comparable<T>> implements Iterable<T>{
     /************* Node Class ***************/
     private class Node<T>{
         T data;
@@ -66,6 +89,11 @@ class LinkedList<T> implements Iterable<T>{
     public LinkedList(){
         this.size=0;
         this.head=null;
+    }
+
+    public LinkedList(Node<T> head,int size){
+        this.size=size;
+        this.head=head;
     }
 
     public int size(){
@@ -204,6 +232,72 @@ class LinkedList<T> implements Iterable<T>{
             return null;
         }
         return null;
+    }
+
+    /**
+     * Merge and Reverse the sorted linkedlist
+     * @param ll2 : second linkedlist
+     * @return head node of the merged linkedlist
+     */
+    public LinkedList<T> mergeAndReverse(LinkedList<T> ll2){
+        Node<T> head1=head;
+        Node<T> head2=ll2.head;
+        Node<T> result=null;
+        while(head1!=null && head2!=null){
+            T head1_data = head1.data;
+            T head2_data = head2.data;
+            Node<T> node =null;
+            if(head1_data.compareTo(head2_data)>0){
+                //head1.data>head2.data
+                node=new Node<>(head2_data);
+                node.next=result;
+                result=node;
+                head2=head2.next;
+            }else{
+                //head1.data<head2.data
+                node=new Node<>(head1_data);
+                node.next=result;
+                result=node;
+                head1=head1.next;
+            }
+        }
+        while(head1!=null){
+            Node<T> node=new Node<>(head1.data);
+            node.next=result;
+            result=node;
+            head1=head1.next;
+        }
+        while(head2!=null){
+            Node<T> node=new Node<>(head2.data);
+            node.next=result;
+            result=node;
+            head2=head2.next;
+        }
+        return new LinkedList<T>(result,this.size+ll2.size());
+
+    }
+
+    public void deleteAlternate(){
+        Node temp=head;
+        if(temp==null)return;
+        while(temp!=null&& temp.next!=null){
+            temp.next=temp.next.next;
+            temp=temp.next;
+            size-=1;
+        }
+    }
+
+    public void deleteMiddle(){
+        if(head==null || head.next==null)return;
+        Node fast=head,slow=head,prev=null;
+        while(fast!=null && fast.next!=null){
+            prev=slow;
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        prev.next=slow.next;
+        slow=null;
+        size--;
     }
 
     @Override
