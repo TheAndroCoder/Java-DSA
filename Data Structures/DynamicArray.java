@@ -167,7 +167,7 @@ class Array <T> implements Iterable<T>{
 
             @Override
             public T next() {
-                return arr[index];
+                return arr[index++];
             }
         };
     }
